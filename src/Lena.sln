@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lena", "Lena\Lena.csproj", "{1705E1FE-4D0E-4F2E-8904-2393F5065583}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lena.Tests", "Lena.Tests\Lena.Tests.csproj", "{3A618B1E-94C0-41AE-B9A1-E155AF204606}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1705E1FE-4D0E-4F2E-8904-2393F5065583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1705E1FE-4D0E-4F2E-8904-2393F5065583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1705E1FE-4D0E-4F2E-8904-2393F5065583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1705E1FE-4D0E-4F2E-8904-2393F5065583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A618B1E-94C0-41AE-B9A1-E155AF204606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A618B1E-94C0-41AE-B9A1-E155AF204606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A618B1E-94C0-41AE-B9A1-E155AF204606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A618B1E-94C0-41AE-B9A1-E155AF204606}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
