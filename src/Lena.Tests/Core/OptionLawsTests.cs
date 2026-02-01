@@ -1,6 +1,6 @@
 ﻿using Lena.Core;
 
-namespace Lena.Tests;
+namespace Lena.Tests.Core;
 
 public class OptionLawsTests
 {

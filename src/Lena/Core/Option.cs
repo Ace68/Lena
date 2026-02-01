@@ -9,6 +9,7 @@
 public readonly partial struct Option<T>
 {
     private readonly T _value;
+    private T UnsafeValue => _value;
 
     public bool IsSome { get; }
     public bool IsNone => !IsSome;
@@ -29,19 +30,13 @@ public readonly partial struct Option<T>
 
     public static Option<T> None() =>
         new Option<T>(default!, false);
-
-    // Unsafe access (interno)
-    internal T Value =>
-        IsSome
-            ? _value
-            : throw new InvalidOperationException("Option has no value");
     
     public Option<TResult> Map<TResult>(Func<T, TResult> f)
     {
         if (f is null) throw new ArgumentNullException(nameof(f));
 
         return IsSome
-            ? Option<TResult>.Some(f(_value))
+            ? Option<TResult>.Some(f(UnsafeValue))
             : Option<TResult>.None();
     }
 
@@ -50,7 +45,7 @@ public readonly partial struct Option<T>
         if (f is null) throw new ArgumentNullException(nameof(f));
 
         return IsSome
-            ? f(_value)
+            ? f(UnsafeValue)
             : Option<TResult>.None();
     }
     
@@ -62,7 +57,7 @@ public readonly partial struct Option<T>
         if (none is null) throw new ArgumentNullException(nameof(none));
 
         return IsSome
-            ? some(_value)
+            ? some(UnsafeValue)
             : none();
     }
 
@@ -71,7 +66,66 @@ public readonly partial struct Option<T>
         if (fallback is null) throw new ArgumentNullException(nameof(fallback));
 
         return IsSome
-            ? _value
+            ? UnsafeValue
             : fallback();
+    }
+    
+    public T GetOrElse(T fallbackValue) =>
+        IsSome ? UnsafeValue : fallbackValue;
+    
+    public T GetOrThrow() =>
+        IsSome ? UnsafeValue : throw new InvalidOperationException("Option is None");
+        
+    public T GetOrThrow(string message) =>
+        IsSome ? UnsafeValue : throw new InvalidOperationException(message);
+        
+    public T GetOrThrow(Exception exception) =>
+        IsSome ? UnsafeValue : throw exception;
+    
+    public Option<T> Filter(Func<T, bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        return IsSome && predicate(UnsafeValue) ? this : None();
+    }
+    
+    public Option<T> Or(Option<T> alternative) =>
+        IsSome ? this : alternative;
+        
+    public Option<T> Or(Func<Option<T>> alternativeProvider)
+    {
+        if (alternativeProvider is null) throw new ArgumentNullException(nameof(alternativeProvider));
+        return IsSome ? this : alternativeProvider();
+    }
+    
+    public bool Contains(T value) =>
+        IsSome && EqualityComparer<T>.Default.Equals(UnsafeValue, value);
+        
+    public bool Exists(Func<T, bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        return IsSome && predicate(UnsafeValue);
+    }
+    
+    public void IfSome(Action<T> action)
+    {
+        if (action is null) throw new ArgumentNullException(nameof(action));
+        if (IsSome) action(UnsafeValue);
+    }
+    
+    public void IfNone(Action action)
+    {
+        if (action is null) throw new ArgumentNullException(nameof(action));
+        if (IsNone) action();
+    }
+    
+    public T[] ToArray() =>
+        IsSome ? new[] { UnsafeValue } : Array.Empty<T>();
+        
+    public List<T> ToList() =>
+        IsSome ? new List<T> { UnsafeValue } : new List<T>();
+        
+    public IEnumerable<T> ToEnumerable()
+    {
+        if (IsSome) yield return UnsafeValue;
     }
 }

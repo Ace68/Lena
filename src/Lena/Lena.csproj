@@ -4,12 +4,22 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>Lena</Title>
+        <Authors>Alberto Acerbis</Authors>
+        <Company>Alberto Acerbis</Company>
+        <Description>Lena is a comprehensive C# library providing functional programming primitives such as `Option`, `Result`, `Either`, and `Validation` types, inspired by languages like F#, Rust, and Haskell. It helps manage optional values, error handling, and functional patterns in a more expressive and type-safe way.</Description>
+        <PackageProjectUrl>https://github.com/Ace68/Lena</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <RepositoryUrl>https://github.com/Ace68/Lena</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Asyncs\" />
-      <Folder Include="Extensions\" />
-      <Folder Include="Functions\" />
+      <None Include="..\..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>
