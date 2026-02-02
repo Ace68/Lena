@@ -78,6 +78,28 @@ public readonly partial struct Result<T>
     public T GetOrElse(T fallbackValue) =>
         IsSuccess ? UnsafeValue : fallbackValue;
     
+    public bool TryGetValue(out T value)
+    {
+        if (IsSuccess)
+        {
+            value = UnsafeValue;
+            return true;
+        }
+        value = default!;
+        return false;
+    }
+
+    public bool TryGetError(out Exception error)
+    {
+        if (IsError)
+        {
+            error = UnsafeError;
+            return true;
+        }
+        error = null!;
+        return false;
+    }
+    
     public Option<T> ToOption() =>
         IsSuccess ? Option<T>.Some(UnsafeValue) : Option<T>.None();
 }
