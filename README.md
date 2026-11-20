@@ -11,6 +11,7 @@ Lena is a comprehensive C# library providing functional programming primitives s
 - **`Either<TLeft, TRight>`**: Represents a value that can be one of two types
 - **`Validation<T>`**: Like Result but accumulates multiple errors instead of failing fast
 - **`Unit`**: Represents a type with only one value, useful in generic contexts
+- **`Enumeration`**: Base class for rich, type-safe enumerations (a smart alternative to C# `enum`)
 
 ### Functional Programming Utilities
 
@@ -131,6 +132,39 @@ var doubled = right.Map(x => x * 2);  // Right(84)
 var leftStayed = left.Map(x => x * 2); // Left("error")
 ```
 
+### Enumeration
+
+`Enumeration` is an abstract base class for building enumeration classes instead of plain `enum` types, as described in [Use enumeration classes instead of enum types](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types). Each value carries an `Id`, a `Code` and a display `Name`, and can hold its own behavior.
+
+```csharp
+using Lena.Enumerations;
+
+public class CardType : Enumeration
+{
+    public static readonly CardType Amex       = new(1, "AMX", "American Express");
+    public static readonly CardType Visa       = new(2, "VIS", "Visa");
+    public static readonly CardType MasterCard = new(3, "MC",  "MasterCard");
+
+    private CardType(int id, string code, string name) : base(id, code, name) { }
+}
+
+// List all values (public static fields declared on the type)
+var all = Enumeration.GetAll<CardType>();             // Amex, Visa, MasterCard
+
+// Lookup by Id, Code or Name
+var visa = Enumeration.FromValue<CardType>(2);                     // Visa
+var mc   = Enumeration.FromCode<CardType>("MC");                   // MasterCard
+var amex = Enumeration.FromDisplayName<CardType>("American Express"); // Amex
+// An unknown value throws InvalidOperationException
+
+// Equality and ordering are based on type and Id
+visa.Equals(CardType.Visa);                            // true
+visa.CompareTo(CardType.MasterCard);                   // < 0
+Enumeration.AbsoluteDifference(amex, mc);              // 2
+
+visa.ToString();                                       // "Visa"
+```
+
 ### Extension Methods and Collections
 
 ```csharp
@@ -181,6 +215,7 @@ The library includes comprehensive unit tests covering core laws, edge cases, an
 - `Lena/Extensions/`: Extension methods for functional programming patterns
 - `Lena/Functions/`: Higher-order functions and utilities  
 - `Lena/Asyncs/`: Async support for core types
+- `Lena/Enumerations/`: `Enumeration` base class for type-safe enumeration classes
 - `Lena.Tests/`: Comprehensive unit tests
 
 ## Contributing
